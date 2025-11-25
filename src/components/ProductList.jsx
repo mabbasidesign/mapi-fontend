@@ -7,6 +7,7 @@ function ProductList() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", price: "" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const loadProducts = async () => {
     try {
@@ -49,9 +50,28 @@ function ProductList() {
     }
   };
 
+  // Filter products based on search term
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h2>Products</h2>
+
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{
+          marginBottom: "15px",
+          padding: "8px",
+          width: "300px",
+          border: "1px solid #ccc",
+          borderRadius: "4px"
+        }}
+      />
 
       {error && (
         <div style={{ color: "red", padding: "10px", background: "#fee" }}>
@@ -63,7 +83,7 @@ function ProductList() {
 
       {loading && <p>Loading...</p>}
 
-      {products.map((p) => (
+      {filteredProducts.map((p) => (
         <div key={p.id} style={{ display: "flex", gap: 10, marginBottom: 10, alignItems: "center" }}>
           {editingId === p.id ? (
             <>
