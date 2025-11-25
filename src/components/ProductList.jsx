@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { getProducts, deleteProduct } from "../api/productApi";
+import { getProducts, deleteProduct, updateProduct } from "../api/productApi";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({ name: "", price: "" });
 
   const loadProducts = async () => {
     try {
@@ -24,6 +26,29 @@ function ProductList() {
     loadProducts();
   }, []);
 
+  const startEdit = (product) => {
+    setEditingId(product.id);
+    setEditForm({ name: product.name, price: product.price });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditForm({ name: "", price: "" });
+  };
+
+  const saveEdit = async (id) => {
+    try {
+      await updateProduct(id, {
+        name: editForm.name,
+        price: Number(editForm.price),
+      });
+      await loadProducts();
+      cancelEdit();
+    } catch (err) {
+      console.error("Failed to update product:", err);
+    }
+  };
+
   return (
     <div>
       <h2>Products</h2>
@@ -39,11 +64,32 @@ function ProductList() {
       {loading && <p>Loading...</p>}
 
       {products.map((p) => (
-        <div key={p.id} style={{ display: "flex", gap: 20 }}>
-          <span>{p.name} — ${p.price}</span>
-          <button onClick={() => deleteProduct(p.id).then(loadProducts)}>
-            Delete
-          </button>
+        <div key={p.id} style={{ display: "flex", gap: 10, marginBottom: 10, alignItems: "center" }}>
+          {editingId === p.id ? (
+            <>
+              <input
+                value={editForm.name}
+                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                placeholder="Name"
+              />
+              <input
+                value={editForm.price}
+                onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
+                type="number"
+                placeholder="Price"
+              />
+              <button onClick={() => saveEdit(p.id)}>Save</button>
+              <button onClick={cancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <>
+              <span style={{ minWidth: 200 }}>{p.name} — ${p.price}</span>
+              <button onClick={() => startEdit(p)}>Edit</button>
+              <button onClick={() => deleteProduct(p.id).then(loadProducts)}>
+                Delete
+              </button>
+            </>
+          )}
         </div>
       ))}
     </div>

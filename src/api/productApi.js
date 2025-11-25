@@ -1,36 +1,31 @@
+import axios from "axios";
+
 const BASE_URL = "https://localhost:7278/api/ProductOrder";
 
-export const getProducts = () =>
-  fetch(BASE_URL).then((r) => {
-    if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
-    return r.json();
-  });
+export const getProducts = async () => {
+  const response = await axios.get(BASE_URL);
+  return response.data;
+};
 
-export const createProduct = (body) =>
-  fetch(BASE_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+export const createProduct = async (body) => {
+  const response = await axios.post(BASE_URL, body);
+  return response.data;
+};
 
-export const deleteProduct = (id) =>
-  fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-  });
+export const deleteProduct = async (id) => {
+  const response = await axios.delete(`${BASE_URL}/${id}`);
+  return response.data;
+};
 
-export const updateProduct = (id, body) =>
-  fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+export const updateProduct = async (id, body) => {
+  const response = await axios.put(`${BASE_URL}/${id}`, body);
+  return response.data;
+};
 
-export const patchProduct = (id, body) =>
-  fetch(`${BASE_URL}/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+export const patchProduct = async (id, body) => {
+  const response = await axios.patch(`${BASE_URL}/${id}`, body);
+  return response.data;
+};
 
 
   // Edit Product
