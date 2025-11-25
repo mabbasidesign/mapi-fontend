@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createProduct } from "../api/productApi";
 
-function ProductForm() {
+function ProductForm({ onProductAdded }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
@@ -12,6 +12,10 @@ function ProductForm() {
 
     setName("");
     setPrice("");
+    
+    if (onProductAdded) {
+      onProductAdded();
+    }
   };
 
   return (

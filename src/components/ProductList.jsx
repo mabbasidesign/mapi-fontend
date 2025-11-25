@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { getProducts, deleteProduct, updateProduct } from "../api/productApi";
 
-function ProductList() {
+const ProductList = forwardRef((props, ref) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,10 @@ function ProductList() {
       setLoading(false);
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    loadProducts
+  }));
 
   useEffect(() => {
     loadProducts();
@@ -110,6 +114,6 @@ function ProductList() {
       ))}
     </div>
   );
-}
+});
 
 export default ProductList;
