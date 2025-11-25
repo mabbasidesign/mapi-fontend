@@ -3,7 +3,7 @@ import ProductList from "../components/ProductList";
 
 function ProductsPage() {
   return (
-    <div>
+    <div className="App">
       <h1>Product Dashboard</h1>
       <ProductForm />
       <ProductList />

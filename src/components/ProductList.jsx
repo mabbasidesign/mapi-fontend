@@ -59,19 +59,15 @@ function ProductList() {
     <div>
       <h2>Products</h2>
 
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          marginBottom: "15px",
-          padding: "8px",
-          width: "300px",
-          border: "1px solid #ccc",
-          borderRadius: "4px"
-        }}
-      />
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="🔍 Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       {error && (
         <div style={{ color: "red", padding: "10px", background: "#fee" }}>
@@ -84,7 +80,7 @@ function ProductList() {
       {loading && <p>Loading...</p>}
 
       {filteredProducts.map((p) => (
-        <div key={p.id} style={{ display: "flex", gap: 10, marginBottom: 10, alignItems: "center" }}>
+        <div key={p.id} className="product-item">
           {editingId === p.id ? (
             <>
               <input

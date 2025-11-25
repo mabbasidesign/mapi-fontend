@@ -15,21 +15,24 @@ function ProductForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="product-form" onSubmit={handleSubmit}>
       <input 
-        placeholder="Name"
+        placeholder="Product Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        required
       />
 
       <input 
-        placeholder="Price"
+        placeholder="Price ($)"
         type="number"
+        step="0.01"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
+        required
       />
 
-      <button type="submit">Add</button>
+      <button type="submit">➕ Add Product</button>
     </form>
   );
 }
